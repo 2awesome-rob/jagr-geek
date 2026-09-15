@@ -183,7 +183,7 @@ def display_game_log(game_log_df: pd.DataFrame, df_games: pd.DataFrame) -> None:
 		columns = ["game_date", "goals", "assists", "points", "penalty_min"]
 		names = {"game_date": "Date", "goals": "Goals", "assists": "Assists", "points": "Points", "penalty_min": "PIM"}
 
-	st.dataframe(frame.head(3)[columns].rename(columns=names), hide_index=True)
+	st.dataframe(frame.head(4)[columns].rename(columns=names), hide_index=True)
 
 
 def plot_game_log(game_log_df: pd.DataFrame, df_games: pd.DataFrame) -> None:
@@ -252,7 +252,7 @@ def plot_season_stats(df_players: pd.DataFrame, df_games: pd.DataFrame, df_roste
 			values="total_stat",
 			title=f"Total {stat.title()} by Player",
 			color="total_stat",
-			color_continuous_scale="reds_r",
+			color_continuous_scale="blues_r",
 		)
 	)
 
@@ -264,7 +264,7 @@ def plot_season_stats(df_players: pd.DataFrame, df_games: pd.DataFrame, df_roste
 	figure = px.imshow(
 		wide,
 		title=f"Player {stat.title()} by Game",
-		color_continuous_scale=[(0, "black"), (0.7, "#A54848"), (1, "white")],
+		color_continuous_scale=[(0, "black"), (0.7, "#36D6DB"), (1, "white")],
 		labels={"x": "Game #", "y": "Player", "color": stat.title()},
 	)
 	figure.update_xaxes(showticklabels=False)

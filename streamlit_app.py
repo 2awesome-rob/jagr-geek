@@ -59,7 +59,7 @@ else:
 			"League Play",
 			["League", "PostSeason", "Tournament", "Tiering"],
 			selection_mode="multi",
-			default=["League", "Tournament", "PostSeason"],
+			default=["League", "Tournament", "PostSeason", "Tiering"],
 		)
 	st.session_state.league_play = selected_league_plays
 	game_type_map = {"League": 1, "Tournament": 2, "Tiering": 4, "PostSeason": 3}
@@ -135,12 +135,16 @@ with tabs[3]:
 	st.link_button("🏙️ PNAHA", "https://stats.pnaha.timetoscore.com//display-stats.php?league=1")
 	st.markdown("---")
 	st.header("12U A2 Rocket Systems 🐶 🦊 🦅")
-	st.link_button("✏️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=cOR--Fi5KoU&ra=m")
-	st.link_button("📽️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=8URiYylC7lc&ra=m")
-	st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Lb5OfNvu3FM")
-	st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Tnwe87WvCpc")
-	st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=4sMlLFmDd1Q")
-	st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=-CvoplULOZw")
+	col31, col32, col33 = st.columns(3)
+	with col31:
+		st.link_button("✏️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=cOR--Fi5KoU&ra=m")
+		st.link_button("📽️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=8URiYylC7lc&ra=m")
+	with col32:
+		st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Lb5OfNvu3FM")
+		st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Tnwe87WvCpc")
+	with col33:
+		st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=4sMlLFmDd1Q")
+		st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=-CvoplULOZw")
 	
 	st.markdown("---")
 	st.write("Other Hockey Links:")
