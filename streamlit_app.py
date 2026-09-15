@@ -57,12 +57,12 @@ else:
 	with col02:
 		selected_league_plays = st.pills(
 			"League Play",
-			["League", "PostSeason", "Tournament", "Tiering"],
+			["League", "Tournament", "PostSeason", "PreSeason"],
 			selection_mode="multi",
-			default=["League", "Tournament", "PostSeason", "Tiering"],
+			default=["League", "Tournament", "PostSeason", "PreSeason"],
 		)
 	st.session_state.league_play = selected_league_plays
-	game_type_map = {"League": 1, "Tournament": 2, "Tiering": 4, "PostSeason": 3}
+	game_type_map = {"League": 1, "Tournament": 2, "PreSeason": 4, "PostSeason": 3}
 	selected_game_types = [game_type_map[label] for label in selected_league_plays]
 	df_selected_games = df_games[df_games["game_type_id"].isin(selected_game_types)] if selected_game_types else df_games.iloc[0:0]
 	selected_game_ids = df_selected_games["game_id"].unique()
