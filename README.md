@@ -16,7 +16,7 @@ jagr-geek/
 ├── app/
 │	├── main.py				# Helpers and shared utilities
 │	└── database/			# Database access point
-├── tests/
+├── tests/                  # TODO add testing
 │	├── test.db				# Test Database
 │	├── conftest.py			# CI test setup
 │	└── test_*.py			# CI tests

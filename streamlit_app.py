@@ -46,9 +46,10 @@ if df_teams.empty or df_rosters.empty:
 	selected_game_ids = df_selected_games["game_id"].unique() if "game_id" in df_selected_games else []
 else:
 	team_map = df_teams.set_index("team_id")["team_name"].to_dict()
-	team_options = sorted(df_teams["team_name"].dropna().unique().tolist(), reverse=True)
+	#team_options = sorted(df_teams["team_name"].dropna().unique().tolist(), reverse=True)
+	team_options = df_teams["team_name"].dropna().tolist()
 	with col01:
-		selected_team_name = st.selectbox("Selected Team", team_options, index=0, disabled=True)
+		selected_team_name = st.selectbox("Selected Team", team_options, index=1, disabled=True)
 	selected_team_id = int(df_teams.loc[df_teams["team_name"] == selected_team_name, "team_id"].iloc[0])
 	st.session_state.team_name = selected_team_name
 	st.session_state.team_id = selected_team_id

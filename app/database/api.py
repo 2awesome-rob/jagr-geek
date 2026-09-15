@@ -159,6 +159,7 @@ def load_dfs_from_database(
 		df_players["goals"] = pd.to_numeric(df_players["goals"], errors="coerce").fillna(0).astype(int)
 		df_players["assists"] = pd.to_numeric(df_players["assists"], errors="coerce").fillna(0).astype(int)
 		df_players["points"] = df_players["goals"] + df_players["assists"]
+		df_players["penalty_min"] = df_players["penalty_min"].div(60)
 		df_players["active"] = ~df_players["active"].isin([0, 5, 6])
 
 	if not df_goalies.empty:
