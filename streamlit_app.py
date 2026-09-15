@@ -1,30 +1,25 @@
 """Streamlit entry point for the Jagr hockey statistics dashboard."""
-
 import pandas as pd
 import streamlit as st
 
-from app.main import (
-	display_game_log,
-	display_game_table,
-	display_season_total_stats,
-	display_summary_stats,
-	display_team_record,
-	plot_assist_point_ratio,
-	plot_game_log,
-	plot_season_stats,
-	summarize_team_games,
-)
 from app.database.api import load_dfs_from_database
 
+from app.services.team import (
+	display_game_table,	display_team_record, summarize_team_games
+)
+from app.services.player import (
+	display_game_log, display_season_total_stats, display_summary_stats
+)
+from app.services.plots import (
+	plot_assist_point_ratio, plot_game_log, plot_season_stats
+)
 
-st.set_page_config(page_title="SimpleHockeyStat", page_icon="🏒")
-
+st.set_page_config(page_title="Rocket Hockey 12U", page_icon="🏒")
 
 @st.cache_data
 def load_dashboard_data(season: int):
 	"""Cache the database read while allowing DATABASE_URL to select the backend."""
 	return load_dfs_from_database(season)
-
 
 st.title("🏒 HockeyStat Dashboard", help="Hockey Team and Player Statistics Tracker")
 selected_season = 2026
@@ -46,9 +41,10 @@ if df_teams.empty or df_rosters.empty:
 	selected_game_ids = df_selected_games["game_id"].unique() if "game_id" in df_selected_games else []
 else:
 	team_map = df_teams.set_index("team_id")["team_name"].to_dict()
-	team_options = sorted(df_teams["team_name"].dropna().unique().tolist(), reverse=True)
+	#team_options = sorted(df_teams["team_name"].dropna().unique().tolist(), reverse=True)
+	team_options = df_teams["team_name"].dropna().tolist()
 	with col01:
-		selected_team_name = st.selectbox("Selected Team", team_options, index=0, disabled=True)
+		selected_team_name = st.selectbox("Selected Team", team_options, index=1, disabled=True)
 	selected_team_id = int(df_teams.loc[df_teams["team_name"] == selected_team_name, "team_id"].iloc[0])
 	st.session_state.team_name = selected_team_name
 	st.session_state.team_id = selected_team_id
@@ -56,12 +52,12 @@ else:
 	with col02:
 		selected_league_plays = st.pills(
 			"League Play",
-			["League", "PostSeason", "Tournament", "Tiering"],
+			["League", "Tournament", "PostSeason", "PreSeason"],
 			selection_mode="multi",
-			default=["League", "Tournament", "PostSeason"],
+			default=["League", "Tournament", "PostSeason", "PreSeason"],
 		)
 	st.session_state.league_play = selected_league_plays
-	game_type_map = {"League": 1, "Tournament": 2, "Tiering": 4, "PostSeason": 3}
+	game_type_map = {"League": 1, "Tournament": 2, "PreSeason": 4, "PostSeason": 3}
 	selected_game_types = [game_type_map[label] for label in selected_league_plays]
 	df_selected_games = df_games[df_games["game_type_id"].isin(selected_game_types)] if selected_game_types else df_games.iloc[0:0]
 	selected_game_ids = df_selected_games["game_id"].unique()
@@ -134,12 +130,16 @@ with tabs[3]:
 	st.link_button("🏙️ PNAHA", "https://stats.pnaha.timetoscore.com//display-stats.php?league=1")
 	st.markdown("---")
 	st.header("12U A2 Rocket Systems 🐶 🦊 🦅")
-	st.link_button("✏️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=cOR--Fi5KoU&ra=m")
-	st.link_button("📽️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=8URiYylC7lc&ra=m")
-	st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Lb5OfNvu3FM")
-	st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Tnwe87WvCpc")
-	st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=4sMlLFmDd1Q")
-	st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=-CvoplULOZw")
+	col31, col32, col33 = st.columns(3)
+	with col31:
+		st.link_button("✏️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=cOR--Fi5KoU&ra=m")
+		st.link_button("📽️ 1-2-2 Forecheck", "https://www.youtube.com/watch?app=desktop&v=8URiYylC7lc&ra=m")
+	with col32:
+		st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Lb5OfNvu3FM")
+		st.link_button("✏️ Breakout", "https://www.youtube.com/watch?v=Tnwe87WvCpc")
+	with col33:
+		st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=4sMlLFmDd1Q")
+		st.link_button("📽️ Breakout", "https://www.youtube.com/watch?v=-CvoplULOZw")
 	
 	st.markdown("---")
 	st.write("Other Hockey Links:")

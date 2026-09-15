@@ -22,11 +22,11 @@ GAME_COLUMNS = [
 	"away_score", "was_overtime", "was_shootout", "game_type_id",
 ]
 PLAYER_COLUMNS = [
-	"game_id", "player_id", "goals", "assists", "penalty_min", "toi_sec",
+	"game_id", "player_id", "line_id", "goals", "assists", "penalty_min", "toi_sec",
 	"shots", "plus", "minus", "active",
 ]
 GOALIE_COLUMNS = [
-	"game_id", "player_id", "shots_on", "saves", "goals_against", "is_win",
+	"game_id", "player_id", "line_id", "shots_on", "saves", "goals_against", "is_win",
 	"is_loss", "active",
 ]
 
@@ -159,7 +159,8 @@ def load_dfs_from_database(
 		df_players["goals"] = pd.to_numeric(df_players["goals"], errors="coerce").fillna(0).astype(int)
 		df_players["assists"] = pd.to_numeric(df_players["assists"], errors="coerce").fillna(0).astype(int)
 		df_players["points"] = df_players["goals"] + df_players["assists"]
-		df_players["active"] = ~df_players["active"].isin([0, 5, 6])
+		df_players["penalty_min"] = df_players["penalty_min"] / 60
+		df_players["active"] = ~df_players["line_id"].isin([0, 5, 6])
 
 	if not df_goalies.empty:
 		df_goalies["shots_on"] = pd.to_numeric(df_goalies["shots_on"], errors="coerce").fillna(0).astype(int)
@@ -175,14 +176,18 @@ def load_dfs_from_database(
 		)
 
 	if not df_teams.empty:
-		df_teams.set_index("team_id", drop=False, inplace=True)
+		df_teams = df_teams.reset_index(drop=True)
+
 	if not df_rosters.empty:
-		df_rosters.set_index("player_id", drop=False, inplace=True)
+		df_rosters = df_rosters.reset_index(drop=True)
+
 	if not df_games.empty:
-		df_games.set_index("game_id", drop=False, inplace=True)
+		df_games = df_games.reset_index(drop=True)
+
 	if not df_players.empty:
-		df_players.set_index(["game_id", "player_id"], drop=False, inplace=True)
+		df_players = df_players.reset_index(drop=True)
+
 	if not df_goalies.empty:
-		df_goalies.set_index(["game_id", "player_id"], drop=False, inplace=True)
+		df_goalies = df_goalies.reset_index(drop=True)
 
 	return df_teams, df_rosters, df_games, df_players, df_goalies

@@ -13,13 +13,14 @@ __pycache__/
 
 # Virtual environments
 venv/
-.env/
+.env
 .env.local
 .env.*.local
 !.env.example
 !.env.test
 
 # Package Files #
+.streamlit/
 *.jar
 *.war
 *.nar
