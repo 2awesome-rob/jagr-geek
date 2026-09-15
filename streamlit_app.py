@@ -1,30 +1,25 @@
 """Streamlit entry point for the Jagr hockey statistics dashboard."""
-
 import pandas as pd
 import streamlit as st
 
-from app.main import (
-	display_game_log,
-	display_game_table,
-	display_season_total_stats,
-	display_summary_stats,
-	display_team_record,
-	plot_assist_point_ratio,
-	plot_game_log,
-	plot_season_stats,
-	summarize_team_games,
-)
 from app.database.api import load_dfs_from_database
 
+from app.services.team import (
+	display_game_table,	display_team_record, summarize_team_games
+)
+from app.services.player import (
+	display_game_log, display_season_total_stats, display_summary_stats
+)
+from app.services.plots import (
+	plot_assist_point_ratio, plot_game_log, plot_season_stats
+)
 
-st.set_page_config(page_title="SimpleHockeyStat", page_icon="🏒")
-
+st.set_page_config(page_title="Rocket Hockey 12U", page_icon="🏒")
 
 @st.cache_data
 def load_dashboard_data(season: int):
 	"""Cache the database read while allowing DATABASE_URL to select the backend."""
 	return load_dfs_from_database(season)
-
 
 st.title("🏒 HockeyStat Dashboard", help="Hockey Team and Player Statistics Tracker")
 selected_season = 2026

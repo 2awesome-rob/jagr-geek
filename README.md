@@ -14,9 +14,13 @@ jagr-geek/
 ├── .streamlit
 │	└── config.toml			# Global Theme settings
 ├── app/
-│	├── main.py				# Helpers and shared utilities
+│	├── services/			# display and logic services
+│	|	├── player.py
+│	|	├── plots.py
+│	|	└── team.py
+│	├── utils/				# helper functions
 │	└── database/			# Database access point
-├── tests/                  # TODO add testing
+├── tests/				  	# TODO add testing
 │	├── test.db				# Test Database
 │	├── conftest.py			# CI test setup
 │	└── test_*.py			# CI tests
@@ -32,11 +36,10 @@ Deployed as [Rocket Hockey](https://rocket-hockey.streamlit.app/) hosted by Stre
 
 ### Database configuration
 
-The app reads `DATABASE_URL` from the process environment first, then from a local `.env` file. If neither is set, it uses `tests/test.db`.
+The app reads `DATABASE_URL` from the process environment first, then from a local `.env` file for development testing. If neither is set, it uses `tests/test.db`.
 
-For deployment, configure a SQLAlchemy database URL in the hosting provider's environment settings. PostgreSQL URLs should use `postgresql+psycopg2://...`; legacy `postgres://...` URLs are also accepted.
+Enter `DATABASE_URL=postgresql+psycopg2://...` in streamlit secrets for deployment.
 
-Copy `.env.example` to `.env` for local configuration. Do not commit credentials or the real `.env` file.
 
 ### Development
 - Setup:
@@ -50,5 +53,3 @@ python -m pip install -r requirements.txt
 ```powershell
 $ streamlit run streamlit_app.py
 ```
-
-
