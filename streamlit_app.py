@@ -31,7 +31,6 @@ except Exception as error:
 	st.error(f"Unable to load hockey data: {error}")
 	st.stop()
 
-col01, col02 = st.columns(2)
 team_map: dict[int, str] = {}
 selected_team_id: int | None = None
 
@@ -45,7 +44,7 @@ else:
 
 	selected_team_id = 1
 	st.session_state.team_id = selected_team_id
-	selected_team_name = team_map(selected_team_id)
+	selected_team_name = team_map[selected_team_id]
 	st.session_state.team_name = selected_team_name
 
 	selected_league_plays = st.pills(
