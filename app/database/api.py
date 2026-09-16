@@ -130,7 +130,7 @@ def load_dfs_from_database(
 
 	df_players = _normalize_columns(
 		df_players,
-		{"pim": "penalty_min"},
+		{"pim_sec": "penalty_min"},
 		{
 			"goals": 0, "assists": 0, "penalty_min": 0, "toi_sec": 0,
 			"shots": 0, "plus": 0, "minus": 0,
@@ -159,7 +159,7 @@ def load_dfs_from_database(
 		df_players["goals"] = pd.to_numeric(df_players["goals"], errors="coerce").fillna(0).astype(int)
 		df_players["assists"] = pd.to_numeric(df_players["assists"], errors="coerce").fillna(0).astype(int)
 		df_players["points"] = df_players["goals"] + df_players["assists"]
-		df_players["penalty_min"] = df_players["penalty_min"] / 60
+		df_players["penalty_min"] = df_players["penalty_min"] / 60 # correct from sec to min
 		df_players["active"] = ~df_players["line_id"].isin([0, 5, 6])
 
 	if not df_goalies.empty:

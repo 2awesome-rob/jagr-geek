@@ -40,6 +40,7 @@ if df_teams.empty or df_rosters.empty:
 	selected_game_ids = df_selected_games["game_id"].unique() if "game_id" in df_selected_games else []
 else:
 	team_map = df_teams.set_index("team_id")["team_name"].to_dict()
+	#TODO use dict_game_types to get game_type_map vs hard coding
 	game_type_map = {"League": 1, "Tournament": 2, "PreSeason": 4, "PostSeason": 3}
 
 	selected_team_id = 1
@@ -48,7 +49,7 @@ else:
 	st.session_state.team_name = selected_team_name
 
 	selected_league_plays = st.pills(
-		"League Play",
+		"Select Game Types:",
 		["League", "Tournament", "PostSeason", "PreSeason"],
 		selection_mode="multi",
 		default=["League", "Tournament", "PostSeason", "PreSeason"],
